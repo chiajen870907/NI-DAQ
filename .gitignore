@@ -4,3 +4,5 @@ datas/
 
 *.spec
 
+*__pycache__
+*.pyc
