@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>1000</height>
+    <width>961</width>
+    <height>992</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>190</y>
-      <width>601</width>
-      <height>711</height>
+      <width>941</width>
+      <height>751</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -35,8 +35,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>571</width>
-        <height>661</height>
+        <width>911</width>
+        <height>711</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -61,8 +61,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>571</width>
-        <height>661</height>
+        <width>921</width>
+        <height>711</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -421,19 +421,6 @@ p, li { white-space: pre-wrap; }
      </widget>
     </widget>
    </widget>
-   <widget class="QPushButton" name="Start">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>910</y>
-      <width>91</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
@@ -456,6 +443,25 @@ p, li { white-space: pre-wrap; }
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_4"/>
    </widget>
+   <widget class="QPushButton" name="Start">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>30</y>
+      <width>311</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>3ds</family>
+      <pointsize>36</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>tabWidget_2</zorder>
@@ -467,8 +473,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>621</width>
-     <height>22</height>
+     <width>961</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

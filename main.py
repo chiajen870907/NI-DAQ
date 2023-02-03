@@ -10,7 +10,7 @@ import os
 
 from nidaqmx.stream_readers import AnalogMultiChannelReader
 from PyQt5 import QtWidgets, uic,QtCore
-from PyQt5.QtWidgets import QMessageBox,QFileDialog
+from PyQt5.QtWidgets import QMessageBox,QFileDialog,QLabel
 from datetime import datetime
 from ui.mainWindow import Ui_MainWindow
 
@@ -34,6 +34,17 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.c0_load_data = self.graphicsView_Load_X.plot([],[])      
         self.c1_load_data = self.graphicsView_Load_Y.plot([],[])      
         self.c2_load_data = self.graphicsView_Load_Z.plot([],[])  
+        # Labels
+        self.graphicsView_Load_X.setLabel(axis='left', text='N')
+        self.graphicsView_Load_X.setLabel(axis='bottom', text='Time (Sec)')
+        self.graphicsView_Load_Y.setLabel(axis='left', text='N')
+        self.graphicsView_Load_Y.setLabel(axis='bottom', text='Time (Sec)')
+        self.graphicsView_Load_Z.setLabel(axis='left', text='N')
+        self.graphicsView_Load_Z.setLabel(axis='bottom', text='Time (Sec)')
+
+        self.graphicsView_X.setLabel(axis='left', text='N')
+        self.graphicsView_Y.setLabel(axis='left', text='N')
+        self.graphicsView_Z.setLabel(axis='left', text='N')
         self.config = configparser.ConfigParser()
 
         # Path
@@ -52,7 +63,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.checkPathExist(self.dataPath)
         self.checkPathExist(self.configPath)
         self.checkConfigFile()
-
+          
     def toggleRun(self):
         if self.continueRunning:
             self.continueRunning = False
@@ -186,10 +197,12 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         filename, _ = QFileDialog.getOpenFileName(self, '開啟檔案', self.dataPath,'CSV Files (*.csv)')
         if filename:
             datas = pd.read_csv(filename,header=None)
-            self.c0_load_data.setData(datas[0].tolist())
-            self.c1_load_data.setData(datas[1].tolist())
-            self.c2_load_data.setData(datas[2].tolist())
+            max_time = len(datas[0]) // int(self.sample_rate_value.value())
+            time_steps = np.linspace(0, max_time, len(datas[0]))
 
+            self.c0_load_data.setData(time_steps,datas[0].tolist())
+            self.c1_load_data.setData(time_steps,datas[1].tolist())
+            self.c2_load_data.setData(time_steps,datas[2].tolist())
 
     def closeEvent(self, event):
         if self.continueRunning:
