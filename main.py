@@ -1,6 +1,7 @@
 import pandas as pd
 import configparser
 import numpy as np
+import pyqtgraph
 import nidaqmx
 import glob
 import sys
@@ -11,14 +12,15 @@ from nidaqmx.stream_readers import AnalogMultiChannelReader
 from PyQt5 import QtWidgets, uic,QtCore
 from PyQt5.QtWidgets import QMessageBox,QFileDialog
 from datetime import datetime
+from ui.mainWindow import Ui_MainWindow
 
-
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         #Load the UI Page by PyQt5
-        uic.loadUi("ui/mainWindow.ui", self)        
-        self.setWindowTitle("DAQ Display")
+        #uic.loadUi(os.path.join(os.getcwd(),"ui","mainWindow.ui"), self)    
+        self.setupUi(self)    
+        self.setWindowTitle("DAQ")
 
         #===========
         self.continueRunning = False
@@ -74,7 +76,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.checkPathExist(os.path.join(self.nowTimePath,'npy'))
             # Create and start task
             self.task = nidaqmx.Task()
-            self.task.ai_channels.add_ai_voltage_chan(physicalChannel, min_val=-10, max_val=10)
+            self.task.ai_channels.add_ai_voltage_chan(physicalChannel, min_val=self.minVal.value(), max_val=self.maxVal.value())
             self.task.timing.cfg_samp_clk_timing(sampleRate, sample_mode=nidaqmx.constants.AcquisitionType.CONTINUOUS, samps_per_chan=self.numberOfSamples)
             self.task.start()
         except Exception as e:
