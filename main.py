@@ -52,17 +52,24 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.dataPath = os.path.join(self.basePath,'datas')
         self.configPath = os.path.join(self.basePath,'config')
         self.configFile = os.path.join(self.configPath,'settigns.ini')
+
         # Handle 
         self.Start.clicked.connect(self.toggleRun)
         self.saveConfig.clicked.connect(self.saveConfigFile)
         self.loadConfig.clicked.connect(self.setConfigFile)
         self.loadCsv.clicked.connect(self.selectCsvFile)
+        self.calculate.clicked.connect(self.calculateCsvFile)
         self.timer.timeout.connect(self.updatePlot)
+        
         
         # Check
         self.checkPathExist(self.dataPath)
         self.checkPathExist(self.configPath)
         self.checkConfigFile()
+
+        # LoadCSV
+        self.load_csv = False
+
           
     def toggleRun(self):
         if self.continueRunning:
@@ -142,6 +149,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             self.config['Channel'] = {'Channel0':10, 'Channel1': 10,'Channel2': 10}
             self.config['Timing'] = {'SampleRate': 5000,'NumberOfSamples': 5000}
             self.config['Other'] = {'physicalChannel':'Dev1/ai0:2','MaxVal':10,'MinVal':-10,'AutoLoad':True,'CloseSave':True}
+            self.config['Load'] = {'frequency':5000}
             self.config.write(open(self.configFile, 'w'))
 
         except Exception as e:
@@ -194,15 +202,28 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             df.to_csv(os.path.join(self.nowTimePath,f'{self.nowTime}.csv'),index=False, header=False)
 
     def selectCsvFile(self):
-        filename, _ = QFileDialog.getOpenFileName(self, '開啟檔案', self.dataPath,'CSV Files (*.csv)')
-        if filename:
-            datas = pd.read_csv(filename,header=None)
-            max_time = len(datas[0]) // int(self.sample_rate_value.value())
-            time_steps = np.linspace(0, max_time, len(datas[0]))
+        load_frequency = self.config['Load']['frequency']
+        frequency, done = QtWidgets.QInputDialog.getInt(self, '輸入Hz', '輸入擷取資料時的頻率',int(load_frequency))
+        if frequency and done :
+            self.config['Load'] = {'frequency':frequency}
+            self.config.write(open(self.configFile, 'w'))
+            filename, _ = QFileDialog.getOpenFileName(self, '開啟檔案', self.dataPath,'CSV Files (*.csv)')
+            if filename:
+                self.datas = pd.read_csv(filename,header=None)
+                self.max_time = len(self.datas[0]) // int(frequency)
+                self.time_steps = np.linspace(0, self.max_time, len(self.datas[0]))
+                self.c0_load_data.setData(self.time_steps,self.datas[0].tolist())
+                self.c1_load_data.setData(self.time_steps,self.datas[1].tolist())
+                self.c2_load_data.setData(self.time_steps,self.datas[2].tolist())
+                self.load_csv = True
+        else:
+            self.load_csv = False
+            self.handleErrorMsgBox('檔案開啟錯誤')
 
-            self.c0_load_data.setData(time_steps,datas[0].tolist())
-            self.c1_load_data.setData(time_steps,datas[1].tolist())
-            self.c2_load_data.setData(time_steps,datas[2].tolist())
+    def calculateCsvFile(self):
+        if not self.load_csv:
+            self.handleErrorMsgBox('請先載入CSV檔案')
+
 
     def closeEvent(self, event):
         if self.continueRunning:
