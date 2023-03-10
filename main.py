@@ -68,7 +68,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.checkConfigFile()
 
         # LoadCSV
-        self.load_csv = False
+
 
           
     def toggleRun(self):
@@ -203,27 +203,38 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
     def selectCsvFile(self):
         load_frequency = self.config['Load']['frequency']
-        frequency, done = QtWidgets.QInputDialog.getInt(self, '輸入Hz', '輸入擷取資料時的頻率',int(load_frequency))
-        if frequency and done :
-            self.config['Load'] = {'frequency':frequency}
+        self.frequency, done = QtWidgets.QInputDialog.getInt(self, '輸入Hz', '輸入擷取資料時的頻率',int(load_frequency))
+        if self.frequency and done :
+            self.config['Load'] = {'frequency':self.frequency}
             self.config.write(open(self.configFile, 'w'))
             filename, _ = QFileDialog.getOpenFileName(self, '開啟檔案', self.dataPath,'CSV Files (*.csv)')
             if filename:
                 self.datas = pd.read_csv(filename,header=None)
-                self.max_time = len(self.datas[0]) // int(frequency)
+                self.max_time = len(self.datas[0]) // int(self.frequency)
                 self.time_steps = np.linspace(0, self.max_time, len(self.datas[0]))
                 self.c0_load_data.setData(self.time_steps,self.datas[0].tolist())
                 self.c1_load_data.setData(self.time_steps,self.datas[1].tolist())
                 self.c2_load_data.setData(self.time_steps,self.datas[2].tolist())
-                self.load_csv = True
         else:
-            self.load_csv = False
             self.handleErrorMsgBox('檔案開啟錯誤')
 
     def calculateCsvFile(self):
-        if not self.load_csv:
-            self.handleErrorMsgBox('請先載入CSV檔案')
+        times, done = QtWidgets.QInputDialog.getText(self, '時間範圍', '輸入需要擷取的時間範圍 1-10',)
+        time1,time2 = times.split('-')
+        time1 = int(time1) * self.frequency
+        time2 = int(time2) * self.frequency
+        self.max_time = len(self.datas[0][time1:time2]) // int(self.frequency)
+        self.time_steps = np.linspace(0, self.max_time, len(self.datas[0][time1:time2]))
 
+        self.c0_load_data.setData(self.time_steps,self.datas[0][time1:time2].tolist())
+        self.c1_load_data.setData(self.time_steps,self.datas[1][time1:time2].tolist())
+        self.c2_load_data.setData(self.time_steps,self.datas[2][time1:time2].tolist())
+        avg1 = sum(self.datas[0][time1:time2]) / len(self.datas[0][time1:time2])
+        avg2 = sum(self.datas[1][time1:time2]) / len(self.datas[1][time1:time2])
+        avg3 = sum(self.datas[2][time1:time2]) / len(self.datas[2][time1:time2])
+        self.graphicsView_Load_X.setLabel(axis='top', text='avg N :' + str(avg1))
+        self.graphicsView_Load_Y.setLabel(axis='top', text='avg N :' + str(avg2))
+        self.graphicsView_Load_Z.setLabel(axis='top', text='avg N :' + str(avg3))
 
     def closeEvent(self, event):
         if self.continueRunning:
