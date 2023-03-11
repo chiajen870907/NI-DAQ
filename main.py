@@ -4,6 +4,7 @@ import numpy as np
 import pyqtgraph
 import nidaqmx
 import glob
+import math
 import sys
 import ast
 import os
@@ -232,13 +233,14 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             self.c1_load_data.setData(self.time_steps,self.datas[1][time1:time2].tolist())
             self.c2_load_data.setData(self.time_steps,self.datas[2][time1:time2].tolist())
             
-            avg1 = sum(self.datas[0][time1:time2]) / len(self.datas[0][time1:time2])
-            avg2 = sum(self.datas[1][time1:time2]) / len(self.datas[1][time1:time2])
-            avg3 = sum(self.datas[2][time1:time2]) / len(self.datas[2][time1:time2])
+            avg1 = round(sum(self.datas[0][time1:time2]) / len(self.datas[0][time1:time2]),2)
+            avg2 = round(sum(self.datas[1][time1:time2]) / len(self.datas[1][time1:time2]),2)
+            avg3 = round(sum(self.datas[2][time1:time2]) / len(self.datas[2][time1:time2]),2)
+            f =  round(math.sqrt(math.pow(avg1,2) + math.pow(avg2,2) + math.pow(avg3,2)),2)
 
-            self.graphicsView_Load_X.setLabel(axis='top', text='avg N :' + str(avg1))
-            self.graphicsView_Load_Y.setLabel(axis='top', text='avg N :' + str(avg2))
-            self.graphicsView_Load_Z.setLabel(axis='top', text='avg N :' + str(avg3))
+            self.graphicsView_Load_X.setLabel(axis='top', text='avg X ： ' + str(avg1) + ' N ， Resultant Force ： ' + str(f) + ' N')
+            self.graphicsView_Load_Y.setLabel(axis='top', text='avg Y ： ' + str(avg2) + ' N ， Resultant Force ： ' + str(f) + ' N')
+            self.graphicsView_Load_Z.setLabel(axis='top', text='avg Z ： ' + str(avg3) + ' N ， Resultant Force ： ' + str(f) + ' N')
 
     def closeEvent(self, event):
         if self.continueRunning:
