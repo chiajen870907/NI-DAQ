@@ -7,3 +7,4 @@ test/
 
 *__pycache__
 *.pyc
+/teast.py

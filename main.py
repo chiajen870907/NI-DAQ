@@ -220,21 +220,25 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
     def calculateCsvFile(self):
         times, done = QtWidgets.QInputDialog.getText(self, '時間範圍', '輸入需要擷取的時間範圍 1-10',)
-        time1,time2 = times.split('-')
-        time1 = int(time1) * self.frequency
-        time2 = int(time2) * self.frequency
-        self.max_time = len(self.datas[0][time1:time2]) // int(self.frequency)
-        self.time_steps = np.linspace(0, self.max_time, len(self.datas[0][time1:time2]))
+        if done:
+            time1,time2 = times.split('-')
+            time1 = int(float(time1) * self.frequency)
+            time2 = int(float(time2) * self.frequency)
 
-        self.c0_load_data.setData(self.time_steps,self.datas[0][time1:time2].tolist())
-        self.c1_load_data.setData(self.time_steps,self.datas[1][time1:time2].tolist())
-        self.c2_load_data.setData(self.time_steps,self.datas[2][time1:time2].tolist())
-        avg1 = sum(self.datas[0][time1:time2]) / len(self.datas[0][time1:time2])
-        avg2 = sum(self.datas[1][time1:time2]) / len(self.datas[1][time1:time2])
-        avg3 = sum(self.datas[2][time1:time2]) / len(self.datas[2][time1:time2])
-        self.graphicsView_Load_X.setLabel(axis='top', text='avg N :' + str(avg1))
-        self.graphicsView_Load_Y.setLabel(axis='top', text='avg N :' + str(avg2))
-        self.graphicsView_Load_Z.setLabel(axis='top', text='avg N :' + str(avg3))
+            self.max_time = len(self.datas[0][time1:time2]) // int(self.frequency)
+            self.time_steps = np.linspace(0, self.max_time, len(self.datas[0][time1:time2]))
+
+            self.c0_load_data.setData(self.time_steps,self.datas[0][time1:time2].tolist())
+            self.c1_load_data.setData(self.time_steps,self.datas[1][time1:time2].tolist())
+            self.c2_load_data.setData(self.time_steps,self.datas[2][time1:time2].tolist())
+            
+            avg1 = sum(self.datas[0][time1:time2]) / len(self.datas[0][time1:time2])
+            avg2 = sum(self.datas[1][time1:time2]) / len(self.datas[1][time1:time2])
+            avg3 = sum(self.datas[2][time1:time2]) / len(self.datas[2][time1:time2])
+
+            self.graphicsView_Load_X.setLabel(axis='top', text='avg N :' + str(avg1))
+            self.graphicsView_Load_Y.setLabel(axis='top', text='avg N :' + str(avg2))
+            self.graphicsView_Load_Z.setLabel(axis='top', text='avg N :' + str(avg3))
 
     def closeEvent(self, event):
         if self.continueRunning:
@@ -242,8 +246,6 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             
         if bool(self.closeSave.checkState()):
             self.saveConfigFile()
-
-        
 
 def main(): 
     app = QtWidgets.QApplication(sys.argv)  
