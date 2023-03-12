@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import configparser
 import numpy as np
@@ -59,6 +60,8 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.saveConfig.clicked.connect(self.saveConfigFile)
         self.loadConfig.clicked.connect(self.setConfigFile)
         self.loadCsv.clicked.connect(self.selectCsvFile)
+        self.cleanCSV.clicked.connect(self.cleanCsvFile)
+
         self.calculate.clicked.connect(self.calculateCsvFile)
         self.timer.timeout.connect(self.updatePlot)
         
@@ -241,6 +244,96 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
             self.graphicsView_Load_X.setLabel(axis='top', text='avg X ： ' + str(avg1) + ' N ， Resultant Force ： ' + str(f) + ' N')
             self.graphicsView_Load_Y.setLabel(axis='top', text='avg Y ： ' + str(avg2) + ' N ， Resultant Force ： ' + str(f) + ' N')
             self.graphicsView_Load_Z.setLabel(axis='top', text='avg Z ： ' + str(avg3) + ' N ， Resultant Force ： ' + str(f) + ' N')
+
+    def cleanCsvFile(self,event):
+        load_frequency = self.config['Load']['frequency']
+        self.frequency, done = QtWidgets.QInputDialog.getInt(self, '輸入Hz', '輸入擷取資料時的頻率',int(load_frequency))
+        if self.frequency and done :
+            self.config['Load'] = {'frequency':self.frequency}
+            self.config.write(open(self.configFile, 'w'))
+            filename, _ = QFileDialog.getOpenFileName(self, '開啟檔案', self.dataPath,'CSV Files (*.csv)')
+            pardir = os.path.abspath(os.path.join(filename, os.path.pardir))
+
+            if filename:
+                df = pd.read_csv(filename, header=None, names=['x', 'y', 'z'])
+                # 計算每列數據的標準差
+                std_x = df['x'].std()
+                std_y = df['y'].std()
+                std_z = df['z'].std()
+
+                # 設定閾值為標準差的2倍
+                threshold_x = 2 * std_x
+                threshold_y = 2 * std_y
+                threshold_z = 2 * std_z
+
+                # 找到前段和後段的索引位置
+                start_index = 0
+                end_index = len(df) - 1
+
+                for i in range(len(df)):
+                    if abs(df.loc[i, 'x']) > threshold_x or abs(df.loc[i, 'y']) > threshold_y or abs(df.loc[i, 'z']) > threshold_z:
+                        start_index = i
+                        break
+
+                for i in range(len(df) - 1, -1, -1):
+                    if abs(df.loc[i, 'x']) > threshold_x or abs(df.loc[i, 'y']) > threshold_y or abs(df.loc[i, 'z']) > threshold_z:
+                        end_index = i
+                        break
+
+                # 刪除前段和後段
+                df = df.iloc[start_index:end_index+1]
+                df.to_csv(os.path.join(pardir,'clean.csv'),header=None,index=None)
+
+                # 計算每個軸向的平均切削力
+                mean_x = df['x'].mean()
+                mean_y = df['y'].mean()
+                mean_z = df['z'].mean()
+
+                # 計算三個軸向的平均切削力的合力
+                force = np.sqrt(mean_x**2 + mean_y**2 + mean_z**2)
+
+                max_time = len(df['x']) // 50000
+                time_steps = np.linspace(0, max_time,  len(df['x']))
+
+                # 分開繪製x、y、z三列的折線圖
+                plt.figure(figsize=(16, 12))
+
+                plt.subplot(3, 1, 1)
+                plt.plot(time_steps,df['x'])
+                plt.title(f"F: {force:.2f} \n Mean Cutting Force: {mean_x:.2f}")
+                plt.ylabel('X-Axis')
+
+
+                plt.subplot(3, 1, 2)
+                plt.plot(time_steps,df['y'])
+                plt.ylabel('Y-Axis')
+                plt.title(f"Mean Cutting Force: {mean_y:.2f}", transform=plt.gca().transAxes)
+
+                plt.subplot(3, 1, 3)
+                plt.plot(time_steps,df['z'])
+                plt.ylabel('Z-Axis')
+                plt.xlabel('Time')
+                plt.title(f"Mean Cutting Force: {mean_z:.2f}", transform=plt.gca().transAxes)
+
+                plt.savefig(os.path.join(pardir,f'clean.jpg'))
+                plt.close()
+
+                self.datas = pd.read_csv(os.path.join(pardir,'clean.csv'),header=None)
+                self.max_time = len(self.datas[0]) // int(self.frequency)
+                self.time_steps = np.linspace(0, self.max_time, len(self.datas[0]))
+                avg1 = round(sum(self.datas[0]) / len(self.datas[0]),2)
+                avg2 = round(sum(self.datas[1]) / len(self.datas[1]),2)
+                avg3 = round(sum(self.datas[2]) / len(self.datas[2]),2)
+                f =  round(math.sqrt(math.pow(avg1,2) + math.pow(avg2,2) + math.pow(avg3,2)),2)
+
+                self.graphicsView_Load_X.setLabel(axis='top', text='avg X ： ' + str(avg1) + ' N ， Resultant Force ： ' + str(f) + ' N')
+                self.graphicsView_Load_Y.setLabel(axis='top', text='avg Y ： ' + str(avg2) + ' N ， Resultant Force ： ' + str(f) + ' N')
+                self.graphicsView_Load_Z.setLabel(axis='top', text='avg Z ： ' + str(avg3) + ' N ， Resultant Force ： ' + str(f) + ' N')
+                self.c0_load_data.setData(self.time_steps,self.datas[0].tolist())
+                self.c1_load_data.setData(self.time_steps,self.datas[1].tolist())
+                self.c2_load_data.setData(self.time_steps,self.datas[2].tolist())
+        else:
+            self.handleErrorMsgBox('檔案開啟錯誤')
 
     def closeEvent(self, event):
         if self.continueRunning:

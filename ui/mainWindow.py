@@ -64,6 +64,9 @@ class Ui_MainWindow(object):
         self.loadCsv = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.loadCsv.setObjectName("loadCsv")
         self.horizontalLayout_5.addWidget(self.loadCsv)
+        self.cleanCSV = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.cleanCSV.setObjectName("cleanCSV")
+        self.horizontalLayout_5.addWidget(self.cleanCSV)
         self.calculate = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.calculate.setObjectName("calculate")
         self.horizontalLayout_5.addWidget(self.calculate)
@@ -237,7 +240,7 @@ class Ui_MainWindow(object):
         self.Start.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 963, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 963, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -245,7 +248,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -253,7 +256,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Acquisition Results"))
-        self.loadCsv.setText(_translate("MainWindow", "LoadCsvFile"))
+        self.loadCsv.setText(_translate("MainWindow", "LoadCsv"))
+        self.cleanCSV.setText(_translate("MainWindow", "cleanCSV"))
         self.calculate.setText(_translate("MainWindow", "Calculate"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Load Acquisition Results"))
         self.ChannelGroup.setTitle(_translate("MainWindow", "Channel Parameters"))
