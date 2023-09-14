@@ -122,7 +122,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -160,36 +160,10 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="channel0_value">
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToPreviousValue</enum>
-             </property>
-             <property name="maximum">
-              <number>1000</number>
-             </property>
-             <property name="value">
-              <number>10</number>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
               <string>Channel - 1 (Y) (N/V):</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="channel1_value">
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToPreviousValue</enum>
-             </property>
-             <property name="maximum">
-              <number>1000</number>
-             </property>
-             <property name="value">
-              <number>10</number>
              </property>
             </widget>
            </item>
@@ -200,16 +174,33 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="channel2_value">
-             <property name="correctionMode">
-              <enum>QAbstractSpinBox::CorrectToPreviousValue</enum>
+           <item row="0" column="1">
+            <widget class="QDoubleSpinBox" name="channel0_value">
+             <property name="decimals">
+              <number>5</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <double>500.000000000000000</double>
              </property>
-             <property name="value">
-              <number>10</number>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QDoubleSpinBox" name="channel1_value">
+             <property name="decimals">
+              <number>5</number>
+             </property>
+             <property name="maximum">
+              <double>500.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QDoubleSpinBox" name="channel2_value">
+             <property name="decimals">
+              <number>5</number>
+             </property>
+             <property name="maximum">
+              <double>500.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -500,7 +491,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>963</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

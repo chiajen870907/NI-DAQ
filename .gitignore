@@ -2,9 +2,16 @@ build/
 dist/
 datas/
 test/
+config/
+
+/teast.py
 
 *.spec
-
+*.mat
 *__pycache__
 *.pyc
-/teast.py
+*.spec
+*.ini
+
+
+

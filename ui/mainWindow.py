@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\ui\mainWindow.ui'
+# Form implementation generated from reading ui file 'D:\Projects\NI-DAQ\ui\mainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -93,28 +93,25 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(self.layoutWidget2)
         self.label_3.setObjectName("label_3")
         self.gridLayout_2.addWidget(self.label_3, 0, 0, 1, 1)
-        self.channel0_value = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.channel0_value.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToPreviousValue)
-        self.channel0_value.setMaximum(1000)
-        self.channel0_value.setProperty("value", 10)
-        self.channel0_value.setObjectName("channel0_value")
-        self.gridLayout_2.addWidget(self.channel0_value, 0, 1, 1, 1)
         self.label_4 = QtWidgets.QLabel(self.layoutWidget2)
         self.label_4.setObjectName("label_4")
         self.gridLayout_2.addWidget(self.label_4, 1, 0, 1, 1)
-        self.channel1_value = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.channel1_value.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToPreviousValue)
-        self.channel1_value.setMaximum(1000)
-        self.channel1_value.setProperty("value", 10)
-        self.channel1_value.setObjectName("channel1_value")
-        self.gridLayout_2.addWidget(self.channel1_value, 1, 1, 1, 1)
         self.label_5 = QtWidgets.QLabel(self.layoutWidget2)
         self.label_5.setObjectName("label_5")
         self.gridLayout_2.addWidget(self.label_5, 2, 0, 1, 1)
-        self.channel2_value = QtWidgets.QSpinBox(self.layoutWidget2)
-        self.channel2_value.setCorrectionMode(QtWidgets.QAbstractSpinBox.CorrectToPreviousValue)
-        self.channel2_value.setMaximum(1000)
-        self.channel2_value.setProperty("value", 10)
+        self.channel0_value = QtWidgets.QDoubleSpinBox(self.layoutWidget2)
+        self.channel0_value.setDecimals(5)
+        self.channel0_value.setMaximum(500.0)
+        self.channel0_value.setObjectName("channel0_value")
+        self.gridLayout_2.addWidget(self.channel0_value, 0, 1, 1, 1)
+        self.channel1_value = QtWidgets.QDoubleSpinBox(self.layoutWidget2)
+        self.channel1_value.setDecimals(5)
+        self.channel1_value.setMaximum(500.0)
+        self.channel1_value.setObjectName("channel1_value")
+        self.gridLayout_2.addWidget(self.channel1_value, 1, 1, 1, 1)
+        self.channel2_value = QtWidgets.QDoubleSpinBox(self.layoutWidget2)
+        self.channel2_value.setDecimals(5)
+        self.channel2_value.setMaximum(500.0)
         self.channel2_value.setObjectName("channel2_value")
         self.gridLayout_2.addWidget(self.channel2_value, 2, 1, 1, 1)
         self.horizontalLayout.addWidget(self.ChannelGroup)
@@ -240,7 +237,7 @@ class Ui_MainWindow(object):
         self.Start.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 963, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 963, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -248,8 +245,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -284,3 +281,13 @@ class Ui_MainWindow(object):
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), _translate("MainWindow", "Config"))
         self.Start.setText(_translate("MainWindow", "Start"))
 from pyqtgraph import PlotWidget
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())

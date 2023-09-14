@@ -120,9 +120,9 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         samplesAvailable = self.task._in_stream.avail_samp_per_chan
         if (samplesAvailable >= self.numberOfSamples):
             vals = self.task.read(self.numberOfSamples)
-            c0 = np.array(vals[0]) * int(self.channel0_value.value())
-            c1 = np.array(vals[1]) * int(self.channel1_value.value())
-            c2 = np.array(vals[2]) * int(self.channel2_value.value())
+            c0 = np.array(vals[0]) * float(self.channel0_value.value())
+            c1 = np.array(vals[1]) * float(self.channel1_value.value())
+            c2 = np.array(vals[2]) * float(self.channel2_value.value())
             data = np.array((c0, c1, c2), dtype=float).T
             file = os.path.join(self.nowTimePath,'npy',f'id_{str(datetime.now().strftime("%Y%m%dT%H%M%S%f"))}.npy')
             np.save(file,data)
@@ -163,9 +163,9 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.autoLoad.setChecked(ast.literal_eval(self.config['Other']['autoload']))
         self.closeSave.setChecked(ast.literal_eval(self.config['Other']['closesave']))
 
-        self.channel0_value.setValue(int(self.config['Channel']['channel0']))	
-        self.channel1_value.setValue(int(self.config['Channel']['channel1']))
-        self.channel2_value.setValue(int(self.config['Channel']['channel2']))
+        self.channel0_value.setValue(float(self.config['Channel']['channel0']))	
+        self.channel1_value.setValue(float(self.config['Channel']['channel1']))
+        self.channel2_value.setValue(float(self.config['Channel']['channel2']))
 
         self.sample_rate_value.setValue(int(self.config['Timing']['samplerate']))
         self.number_samples_value.setValue(int(self.config['Timing']['numberofsamples']))
@@ -178,9 +178,9 @@ class MainWindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.autoLoad.setChecked(ast.literal_eval(self.config['Other']['autoload']))
         self.closeSave.setChecked(ast.literal_eval(self.config['Other']['closesave']))
         if ast.literal_eval(self.config['Other']['autoload']):
-            self.channel0_value.setValue(int(self.config['Channel']['channel0']))	
-            self.channel1_value.setValue(int(self.config['Channel']['channel1']))
-            self.channel2_value.setValue(int(self.config['Channel']['channel2']))
+            self.channel0_value.setValue(float(self.config['Channel']['channel0']))	
+            self.channel1_value.setValue(float(self.config['Channel']['channel1']))
+            self.channel2_value.setValue(float(self.config['Channel']['channel2']))
 
             self.sample_rate_value.setValue(int(self.config['Timing']['samplerate']))
             self.number_samples_value.setValue(int(self.config['Timing']['numberofsamples']))
