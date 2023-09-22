@@ -8,11 +8,13 @@
 如果沒有設備也可以使用NI MAX 模擬，詳閱[NI MAX](https://knowledge.ni.com/KnowledgeArticleDetails?id=kA03q000000YGdqCAG&l=zh-TW)
 
 Step1. 創建模擬
+
 <img src=".\IMG\Simulation1.png" style="width:50%">
 
 <img src=".\IMG\Simulation2.png" style="width:50%">
 
 Step2. 選擇型號
+
 <img src=".\IMG\Simulation3.png" style="width:20%">
 
 ----
