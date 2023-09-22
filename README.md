@@ -9,7 +9,9 @@
 
 Step1. 創建模擬
 <img src=".\IMG\Simulation1.png" style="width:50%">
+
 <img src=".\IMG\Simulation2.png" style="width:50%">
+
 Step2. 選擇型號
 <img src=".\IMG\Simulation3.png" style="width:20%">
 
