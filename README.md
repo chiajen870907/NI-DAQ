@@ -14,7 +14,6 @@ Step1. 創建模擬
 <img src=".\IMG\Simulation2.png" style="width:50%">
 
 Step2. 選擇型號
-
 <img src=".\IMG\Simulation3.png" style="width:20%">
 
 ----
@@ -35,7 +34,7 @@ Min Val : 根據擷取卡設定最小值
 ```
 詳情參閱，[擷取卡規格](https://www.ni.com/zh-tw/shop/hardware/products/c-series-voltage-input-module.html)
 
-<img src=".\IMG\SetUp.png" style="width:50%">
+<img src=".\IMG\SetUp2.png" style="width:50%">
 根據自己的需求設定轉換倍率與擷取頻率，按下Start即可開始抓取資料
 按下Stop後會在自動產生datas資料夾，結果存在datas下檔名格式%Y%m%dT%H%M%S%f
 
